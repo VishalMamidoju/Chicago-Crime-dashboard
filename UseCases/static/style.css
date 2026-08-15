@@ -1,0 +1,150 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+.sidebar {
+    width: 230px;
+    min-height: 100vh;
+    position: fixed;
+    padding: 20px;
+    background: #1f2937;
+}
+
+.sidebar h2,
+.sidebar h3 {
+    color: white;
+}
+
+.sidebar a {
+    display: block;
+    color: #d1d5db;
+    text-decoration: none;
+    padding: 12px;
+    margin: 5px 0;
+}
+
+.sidebar a:hover {
+    background: #374151;
+    border-radius: 5px;
+}
+
+.main-content {
+    margin-left: 230px;
+    padding: 30px;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    min-width: 200px;
+    border-radius: 10px;
+}
+
+.button {
+    display: inline-block;
+    padding: 12px 18px;
+    margin: 10px 5px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background: white;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #e5e7eb;
+}
+
+.crime-form {
+    max-width: 500px;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.crime-form label {
+    display: block;
+    margin-top: 15px;
+}
+
+.crime-form input,
+.crime-form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.crime-form button,
+.search-form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.search-form {
+    margin-top: 20px;
+}
+
+.search-form input {
+    padding: 10px;
+    width: 300px;
+}
+
+.edit-btn {
+    color: #2563eb;
+}
+
+.delete-btn {
+    border: none;
+    background: none;
+    color: red;
+    cursor: pointer;
+}
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.chart-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.chart-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-error {
+    color: red;
+    font-weight: bold;
+}

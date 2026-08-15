@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Chicago Crime Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>Chicago Police Portal</h2>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('crimes') }}">
+            CRUD Operations
+        </a>
+
+        <hr>
+
+        <h3>Use Cases</h3>
+
+        <a href="{{ url_for('usecase1') }}">
+            Use Case 1
+        </a>
+
+        <a href="{{ url_for('usecase2') }}">
+            Use Case 2
+        </a>
+
+        <a href="{{ url_for('usecase3') }}">
+            Use Case 3
+        </a>
+
+        <a href="{{ url_for('usecase4') }}">
+            Use Case 4
+        </a>
+
+    </div>
+
+
+    <div class="main-content">
+
+        {% block content %}
+
+        {% endblock %}
+
+    </div>
+
+</body>
+
+</html>

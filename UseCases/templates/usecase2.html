@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Use Case 2</h1>
+
+<p>Exploratory Analysis and Visualization</p>
+
+<div class="chart-grid">
+
+    {% for chart in charts %}
+
+    <div class="chart-card">
+
+        <h3>{{ chart.title }}</h3>
+
+        <img
+            src="{{ url_for('static', filename=chart.file) }}"
+            alt="{{ chart.title }}"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+        >
+
+        <p class="image-error" style="display: none;">
+            Chart image not found: {{ chart.file }}
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

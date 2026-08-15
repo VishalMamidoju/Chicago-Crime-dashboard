@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Use Case 4</h1>
+
+<p>
+    MySQL Reporting and Integration
+</p>
+
+
+<div class="chart-grid">
+
+
+    <div class="chart-card">
+
+        <h3>Crime Count Per Year</h3>
+
+        <img
+            src="{{ url_for('static', filename='charts/usecase4/crime_yearly.png') }}"
+        >
+
+    </div>
+
+
+    <div class="chart-card">
+
+        <h3>Arrest Count Per Year</h3>
+
+        <img
+            src="{{ url_for('static', filename='charts/usecase4/arrest_yearly.png') }}"
+        >
+
+    </div>
+
+
+    <div class="chart-card">
+
+        <h3>Top Crime Categories</h3>
+
+        <img
+            src="{{ url_for('static', filename='charts/usecase4/top_categories.png') }}"
+        >
+
+    </div>
+
+
+</div>
+
+{% endblock %}

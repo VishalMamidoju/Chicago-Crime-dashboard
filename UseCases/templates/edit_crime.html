@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Edit Crime Record</h1>
+
+
+<form
+    method="POST"
+    class="crime-form"
+>
+
+
+    <label>Crime ID</label>
+
+    <input
+        type="number"
+        value="{{ crime['id'] }}"
+        disabled
+    >
+
+
+    <label>Crime Type</label>
+
+    <input
+        type="text"
+        name="primary_type"
+        value="{{ crime['primary_type'] }}"
+        required
+    >
+
+
+    <label>
+
+        <input
+            type="checkbox"
+            name="arrest"
+
+            {% if crime["arrest"] %}
+                checked
+            {% endif %}
+        >
+
+        Arrest Made
+
+    </label>
+
+
+    <label>Year</label>
+
+    <input
+        type="number"
+        name="crime_year"
+        value="{{ crime['crime_year'] }}"
+        required
+    >
+
+
+    <label>Month</label>
+
+    <input
+        type="number"
+        name="crime_month"
+        value="{{ crime['crime_month'] }}"
+        required
+    >
+
+
+    <label>Day of Week</label>
+
+    <select name="day_of_week">
+
+        {% for day in
+        [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+        ]
+        %}
+
+        <option
+            value="{{ day }}"
+
+            {% if crime["day_of_week"] == day %}
+                selected
+            {% endif %}
+        >
+
+            {{ day }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+
+    <button type="submit">
+
+        Update Record
+
+    </button>
+
+</form>
+
+{% endblock %}

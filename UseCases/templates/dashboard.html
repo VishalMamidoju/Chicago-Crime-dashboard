@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Chicago Crime Dashboard</h1>
+
+<p>
+    Overview of the Chicago Crime Database
+</p>
+
+
+<div class="cards">
+
+    <div class="card">
+
+        <h3>Total Crimes</h3>
+
+        <h2>
+            {{ total_crimes }}
+        </h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Total Arrests</h3>
+
+        <h2>
+            {{ total_arrests }}
+        </h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Crime Categories</h3>
+
+        <h2>
+            {{ total_categories }}
+        </h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Most Common Crime</h3>
+
+        {% if top_crime %}
+
+        <h2>
+            {{ top_crime["primary_type"] }}
+        </h2>
+
+        <p>
+            {{ top_crime["crime_count"] }} records
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-links">
+
+    <a
+        class="button"
+        href="{{ url_for('crimes') }}"
+    >
+        Manage Crime Records
+    </a>
+
+    <a
+        class="button"
+        href="{{ url_for('usecase1') }}"
+    >
+        View Use Case 1
+    </a>
+
+    <a
+        class="button"
+        href="{{ url_for('usecase2') }}"
+    >
+        View Use Case 2
+    </a>
+
+    <a
+        class="button"
+        href="{{ url_for('usecase3') }}"
+    >
+        View Use Case 3
+    </a>
+
+    <a
+        class="button"
+        href="{{ url_for('usecase4') }}"
+    >
+        View Use Case 4
+    </a>
+
+</div>
+
+{% endblock %}
