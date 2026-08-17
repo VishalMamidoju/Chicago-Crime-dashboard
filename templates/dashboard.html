@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Chicago Crime Dashboard</h1>
+
+<p>Overview of the Chicago Crime Database</p>
+
+<div class="cards">
+
+  <div class="card">
+    <h3>Total Crimes</h3>
+    <h2>{{ total_crimes }}</h2>
+  </div>
+
+  <div class="card">
+    <h3>Total Arrests</h3>
+    <h2>{{ total_arrests }}</h2>
+  </div>
+
+  <div class="card">
+    <h3>Crime Categories</h3>
+    <h2>{{ total_categories }}</h2>
+  </div>
+
+  <div class="card">
+    <h3>Most Common Crime</h3>
+
+    {% if top_crime %}
+      <h2>{{ top_crime["primary_type"] }}</h2>
+      <p>{{ top_crime["crime_count"] }} records</p>
+    {% endif %}
+
+  </div>
+
+</div>
+
+{% endblock %}

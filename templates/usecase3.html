@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>Use Case 3</h1>
+
+<p>Statistical Insights and Pattern Detection</p>
+
+<div class="chart-grid">
+  <div class="chart-card">
+    <h3>Crime Intensity by Hour</h3>
+
+    <img
+      src="{{ url_for('static', filename='charts/usecase3/crime_by_hour.png') }}"
+    />
+  </div>
+
+  <div class="chart-card">
+    <h3>Top Community Areas</h3>
+
+    <img
+      src="{{ url_for('static', filename='charts/usecase3/community_crimes.png') }}"
+    />
+  </div>
+
+  <div class="chart-card">
+    <h3>Crime Cross-Correlation</h3>
+
+    <img
+      src="{{ url_for('static', filename='charts/usecase3/correlation_matrix.png') }}"
+    />
+  </div>
+</div>
+
+{% endblock %}

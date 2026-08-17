@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>Add Crime Record</h1>
+
+<form method="POST" class="crime-form">
+  <label>Crime ID</label>
+
+  <input type="number" name="id" required />
+
+  <label>Crime Type</label>
+
+  <input type="text" name="primary_type" required />
+
+  <label>
+    <input type="checkbox" name="arrest" />
+
+    Arrest Made
+  </label>
+
+  <label>Year</label>
+
+  <input type="number" name="crime_year" required />
+
+  <label>Month</label>
+
+  <input type="number" name="crime_month" min="1" max="12" required />
+
+  <label>Day of Week</label>
+
+  <select name="day_of_week">
+    <option>Monday</option>
+    <option>Tuesday</option>
+    <option>Wednesday</option>
+    <option>Thursday</option>
+    <option>Friday</option>
+    <option>Saturday</option>
+    <option>Sunday</option>
+  </select>
+
+  <button type="submit">Add Record</button>
+</form>
+
+{% endblock %}
