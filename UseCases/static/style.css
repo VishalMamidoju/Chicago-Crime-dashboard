@@ -117,15 +117,20 @@ th {
 
 .edit-btn {
     color: #2563eb;
+    text-decoration: none;
 }
-
+.edit-btn:hover {
+    text-decoration: underline;
+}
 .delete-btn {
     border: none;
     background: none;
     color: red;
     cursor: pointer;
 }
-
+.delete-btn:hover {
+    text-decoration: underline;
+}   
 .chart-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

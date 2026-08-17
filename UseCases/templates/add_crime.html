@@ -1,86 +1,43 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <h1>Add Crime Record</h1>
 
+<form method="POST" class="crime-form">
+  <label>Crime ID</label>
 
-<form
-    method="POST"
-    class="crime-form"
->
+  <input type="number" name="id" required />
 
-    <label>Crime ID</label>
+  <label>Crime Type</label>
 
-    <input
-        type="number"
-        name="id"
-        required
-    >
+  <input type="text" name="primary_type" required />
 
+  <label>
+    <input type="checkbox" name="arrest" />
 
-    <label>Crime Type</label>
+    Arrest Made
+  </label>
 
-    <input
-        type="text"
-        name="primary_type"
-        required
-    >
+  <label>Year</label>
 
+  <input type="number" name="crime_year" required />
 
-    <label>
+  <label>Month</label>
 
-        <input
-            type="checkbox"
-            name="arrest"
-        >
+  <input type="number" name="crime_month" min="1" max="12" required />
 
-        Arrest Made
+  <label>Day of Week</label>
 
-    </label>
+  <select name="day_of_week">
+    <option>Monday</option>
+    <option>Tuesday</option>
+    <option>Wednesday</option>
+    <option>Thursday</option>
+    <option>Friday</option>
+    <option>Saturday</option>
+    <option>Sunday</option>
+  </select>
 
-
-    <label>Year</label>
-
-    <input
-        type="number"
-        name="crime_year"
-        required
-    >
-
-
-    <label>Month</label>
-
-    <input
-        type="number"
-        name="crime_month"
-        min="1"
-        max="12"
-        required
-    >
-
-
-    <label>Day of Week</label>
-
-    <select name="day_of_week">
-
-        <option>Monday</option>
-        <option>Tuesday</option>
-        <option>Wednesday</option>
-        <option>Thursday</option>
-        <option>Friday</option>
-        <option>Saturday</option>
-        <option>Sunday</option>
-
-    </select>
-
-
-    <button type="submit">
-
-        Add Record
-
-    </button>
-
+  <button type="submit">Add Record</button>
 </form>
 
 {% endblock %}
