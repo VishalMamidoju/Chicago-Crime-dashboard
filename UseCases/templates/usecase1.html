@@ -1,83 +1,49 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <h1>Use Case 1</h1>
 
-<h2>
-    Data Loading and Cleaning
-</h2>
-
+<h2>Data Loading and Cleaning</h2>
 
 <div class="card">
+  <h3>Total Cleaned Records</h3>
 
-    <h3>Total Cleaned Records</h3>
-
-    <h2>
-        {{ total_records }}
-    </h2>
-
+  <h2>{{ total_records }}</h2>
 </div>
-
 
 <h2>Database Columns</h2>
 
 <ul>
+  {% for column in columns %}
 
-    {% for column in columns %}
+  <li>{{ column["name"] }} - {{ column["type"] }}</li>
 
-    <li>
-
-        {{ column["name"] }}
-
-        -
-
-        {{ column["type"] }}
-
-    </li>
-
-    {% endfor %}
-
+  {% endfor %}
 </ul>
-
 
 <h2>Sample Data</h2>
 
 <table>
+  {% for row in sample_data %} {% if loop.first %}
 
-    {% for row in sample_data %}
+  <tr>
+    {% for key in row.keys() %}
 
-        {% if loop.first %}
-
-        <tr>
-
-            {% for key in row.keys() %}
-
-            <th>
-                {{ key }}
-            </th>
-
-            {% endfor %}
-
-        </tr>
-
-        {% endif %}
-
-
-        <tr>
-
-            {% for value in row %}
-
-            <td>
-                {{ value }}
-            </td>
-
-            {% endfor %}
-
-        </tr>
+    <th>{{ key }}</th>
 
     {% endfor %}
+  </tr>
 
+  {% endif %}
+
+  <tr>
+    {% for value in row %}
+
+    <td>{{ value }}</td>
+
+    {% endfor %}
+  </tr>
+
+  {% endfor %}
 </table>
 
 {% endblock %}
