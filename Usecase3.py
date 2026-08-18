@@ -109,20 +109,29 @@ print("Maximum crimes in a community:", np.max(community_counts))
 print("Minimum crimes in a community:", np.min(community_counts))
 print("Standard deviation:", np.std(community_counts))
 
-# ==================== GRAPH 2: TOP COMMUNITY AREAS ====================
-
-top_10_communities = community_stats.head(10)
+# ==================== COMMUNITY AREA BOX PLOT ====================
 
 plt.figure(figsize=(10, 6))
-plt.bar(
-    top_10_communities["community_code"].astype(str),
-    top_10_communities["crime_count"]
+
+plt.boxplot(
+    community_counts,
+    vert=True
 )
-plt.title("Top 10 Community Areas by Crime Count")
-plt.xlabel("Community Code")
+
+plt.title("Community Area Crime Distribution")
+plt.xlabel("Community Areas")
 plt.ylabel("Number of Crimes")
+
 plt.tight_layout()
-plt.savefig(os.path.join(CHART_DIR, "community_crimes.png"), bbox_inches="tight")
+
+plt.savefig(
+    os.path.join(
+        CHART_DIR,
+        "community_crimes.png"
+    ),
+    bbox_inches="tight"
+)
+
 plt.close()
 
 # ==================== 3. CRIME CROSS-CORRELATION ====================
