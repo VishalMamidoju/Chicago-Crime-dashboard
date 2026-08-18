@@ -2,14 +2,15 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
 import os
 
-# Flask setup
+# FLASK SETUP
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
 
-# Database
 DATABASE = os.path.join(BASE_DIR, "chicago_crime.db")
 
-# Chart locations
+# CHART LOCATIONS
+
 USECASE2_CHARTS = [
     "charts/usecase2/crime_trend.png",
     "charts/usecase2/crime_distribution.png",
@@ -31,14 +32,16 @@ USECASE4_CHARTS = [
     "charts/usecase4/top_categories.png"
 ]
 
-# Database connection
+# DATABASE CONNECTION
+
 def get_db_connection():
     connection = sqlite3.connect(DATABASE)
     connection.row_factory = sqlite3.Row
     return connection
 
 
-# Dashboard
+# DASHBOARD
+
 @app.route("/")
 def dashboard():
     connection = get_db_connection()
@@ -74,7 +77,8 @@ def dashboard():
     )
 
 
-# CRUD - Read
+# CRUD OPERATIONS
+
 @app.route("/crimes")
 def crimes():
     search = request.args.get("search", "")
@@ -108,7 +112,6 @@ def crimes():
     )
 
 
-# CRUD - Create
 @app.route("/crimes/add", methods=["GET", "POST"])
 def add_crime():
     if request.method == "POST":
@@ -142,7 +145,6 @@ def add_crime():
     return render_template("add_crime.html")
 
 
-# CRUD - Update
 @app.route("/crimes/edit/<int:crime_id>", methods=["GET", "POST"])
 def edit_crime(crime_id):
     connection = get_db_connection()
@@ -186,10 +188,13 @@ def edit_crime(crime_id):
         return redirect(url_for("crimes"))
 
     connection.close()
-    return render_template("edit_crime.html", crime=crime)
+
+    return render_template(
+        "edit_crime.html",
+        crime=crime
+    )
 
 
-# CRUD - Delete
 @app.route("/crimes/delete/<int:crime_id>", methods=["POST"])
 def delete_crime(crime_id):
     connection = get_db_connection()
@@ -205,7 +210,8 @@ def delete_crime(crime_id):
     return redirect(url_for("crimes"))
 
 
-# API - Get all crimes
+# REST API
+
 @app.route("/api/crimes", methods=["GET"])
 def api_get_crimes():
     connection = get_db_connection()
@@ -223,7 +229,6 @@ def api_get_crimes():
     ])
 
 
-# API - Get one crime
 @app.route("/api/crimes/<int:crime_id>", methods=["GET"])
 def api_get_crime(crime_id):
     connection = get_db_connection()
@@ -243,7 +248,6 @@ def api_get_crime(crime_id):
     return jsonify(dict(crime))
 
 
-# API - Create
 @app.route("/api/crimes", methods=["POST"])
 def api_create_crime():
     data = request.get_json()
@@ -285,7 +289,6 @@ def api_create_crime():
     }), 201
 
 
-# API - Update
 @app.route("/api/crimes/<int:crime_id>", methods=["PUT"])
 def api_update_crime(crime_id):
     data = request.get_json()
@@ -334,7 +337,6 @@ def api_update_crime(crime_id):
     })
 
 
-# API - Delete
 @app.route("/api/crimes/<int:crime_id>", methods=["DELETE"])
 def api_delete_crime(crime_id):
     connection = get_db_connection()
@@ -364,7 +366,8 @@ def api_delete_crime(crime_id):
     })
 
 
-# Use Case 1
+# USE CASE ROUTES
+
 @app.route("/usecase1")
 def usecase1():
     connection = get_db_connection()
@@ -392,7 +395,6 @@ def usecase1():
     )
 
 
-# Use Case 2
 @app.route("/usecase2")
 def usecase2():
     charts = [
@@ -422,10 +424,12 @@ def usecase2():
         }
     ]
 
-    return render_template("usecase2.html", charts=charts)
+    return render_template(
+        "usecase2.html",
+        charts=charts
+    )
 
 
-# Use Case 3
 @app.route("/usecase3")
 def usecase3():
     return render_template(
@@ -434,7 +438,6 @@ def usecase3():
     )
 
 
-# Use Case 4
 @app.route("/usecase4")
 def usecase4():
     return render_template(
@@ -443,7 +446,8 @@ def usecase4():
     )
 
 
-# Run Flask
+# RUN APPLICATION
+
 if __name__ == "__main__":
     print("Flask application starting...")
     print("Database:", DATABASE)

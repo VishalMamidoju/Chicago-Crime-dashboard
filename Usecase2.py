@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# ==================== PATH SETUP ====================
+# PATH SETUP
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE_FILE = os.path.join(CURRENT_DIR, "chicago_crime.db")
@@ -15,7 +15,7 @@ os.makedirs(CHART_DIR, exist_ok=True)
 print("\nDatabase path:", DATABASE_FILE)
 print("Chart folder:", CHART_DIR)
 
-# ==================== CHECK DATABASE ====================
+# DATABASE CHECK
 
 if not os.path.exists(DATABASE_FILE):
     print("\nERROR: Database file not found!")
@@ -23,7 +23,7 @@ if not os.path.exists(DATABASE_FILE):
     print("Please run Usecase1.py first.")
     raise SystemExit
 
-# ==================== CONNECT TO DATABASE ====================
+# DATABASE CONNECTION
 
 connection = sqlite3.connect(DATABASE_FILE)
 cursor = connection.cursor()
@@ -43,7 +43,7 @@ if "chicago_crimes" not in table_names:
     connection.close()
     raise SystemExit
 
-# ==================== LOAD DATA ====================
+# LOAD DATA
 
 df = pd.read_sql_query("SELECT * FROM chicago_crimes", connection)
 connection.close()
@@ -52,7 +52,7 @@ print("\nData loaded successfully.")
 print("Total Records:", len(df))
 print("Available Columns:", df.columns.tolist())
 
-# ==================== COLUMN COMPATIBILITY ====================
+# COLUMN COMPATIBILITY
 
 if "crime_year" not in df.columns:
     if "Year" in df.columns:
@@ -72,7 +72,7 @@ if "day_of_week" not in df.columns:
     elif "Day_Of_Week" in df.columns:
         df["day_of_week"] = df["Day_Of_Week"]
 
-# ==================== 1. CRIME TREND ====================
+# 1. CRIME TREND
 
 yearly_crimes = df.groupby("crime_year").size()
 
@@ -86,10 +86,13 @@ plt.xlabel("Year")
 plt.ylabel("Number of Crimes")
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig(os.path.join(CHART_DIR, "crime_trend.png"), bbox_inches="tight")
+plt.savefig(
+    os.path.join(CHART_DIR, "crime_trend.png"),
+    bbox_inches="tight"
+)
 plt.close()
 
-# ==================== 2. CRIME DISTRIBUTION ====================
+# 2. CRIME DISTRIBUTION
 
 crime_category = df["primary_type"].value_counts()
 
@@ -103,10 +106,13 @@ plt.xlabel("Crime Type")
 plt.ylabel("Number of Crimes")
 plt.xticks(rotation=90)
 plt.tight_layout()
-plt.savefig(os.path.join(CHART_DIR, "crime_distribution.png"), bbox_inches="tight")
+plt.savefig(
+    os.path.join(CHART_DIR, "crime_distribution.png"),
+    bbox_inches="tight"
+)
 plt.close()
 
-# ==================== 3. TOP 10 CRIMES ====================
+# 3. TOP 10 CRIME TYPES
 
 top_10_crimes = df["primary_type"].value_counts().head(10)
 
@@ -119,10 +125,13 @@ plt.title("Top 10 Crime Types")
 plt.xlabel("Number of Crimes")
 plt.ylabel("Crime Type")
 plt.tight_layout()
-plt.savefig(os.path.join(CHART_DIR, "top_10_crimes.png"), bbox_inches="tight")
+plt.savefig(
+    os.path.join(CHART_DIR, "top_10_crimes.png"),
+    bbox_inches="tight"
+)
 plt.close()
 
-# ==================== 4. ARREST PERCENTAGE ====================
+# 4. ARREST PERCENTAGE
 
 top_10_names = top_10_crimes.index
 top_10_data = df[df["primary_type"].isin(top_10_names)]
@@ -144,10 +153,13 @@ plt.xlabel("Crime Type")
 plt.ylabel("Arrest Percentage (%)")
 plt.xticks(rotation=60)
 plt.tight_layout()
-plt.savefig(os.path.join(CHART_DIR, "arrest_percentage.png"), bbox_inches="tight")
+plt.savefig(
+    os.path.join(CHART_DIR, "arrest_percentage.png"),
+    bbox_inches="tight"
+)
 plt.close()
 
-# ==================== 5. CRIME HEATMAP ====================
+# 5. CRIME HEATMAP
 
 day_order = [
     "Monday", "Tuesday", "Wednesday", "Thursday",
@@ -160,21 +172,32 @@ df["day_of_week"] = pd.Categorical(
     ordered=True
 )
 
-heatmap_data = pd.crosstab(df["day_of_week"], df["crime_month"])
+heatmap_data = pd.crosstab(
+    df["day_of_week"],
+    df["crime_month"]
+)
 
 print("\n========== CRIME HEATMAP DATA ==========")
 print(heatmap_data)
 
 plt.figure(figsize=(12, 6))
-sns.heatmap(heatmap_data, annot=True, fmt="d", cmap="YlOrRd")
+sns.heatmap(
+    heatmap_data,
+    annot=True,
+    fmt="d",
+    cmap="YlOrRd"
+)
 plt.title("Crime Frequency by Month and Day of Week")
 plt.xlabel("Month")
 plt.ylabel("Day of Week")
 plt.tight_layout()
-plt.savefig(os.path.join(CHART_DIR, "crime_heatmap.png"), bbox_inches="tight")
+plt.savefig(
+    os.path.join(CHART_DIR, "crime_heatmap.png"),
+    bbox_inches="tight"
+)
 plt.close()
 
-# ==================== 6. TOP COMMUNITY AREAS ====================
+# 6. TOP COMMUNITY AREAS
 
 community_crimes = df["community_code"].value_counts().head(10)
 
@@ -187,12 +210,16 @@ plt.title("Top 10 Community Areas by Crime Frequency")
 plt.xlabel("Number of Crimes")
 plt.ylabel("Community Code")
 plt.tight_layout()
-plt.savefig(os.path.join(CHART_DIR, "top_community_areas.png"), bbox_inches="tight")
+plt.savefig(
+    os.path.join(CHART_DIR, "top_community_areas.png"),
+    bbox_inches="tight"
+)
 plt.close()
 
-# ==================== 7. MONTHLY CRIME ANALYSIS ====================
+# 7. MONTHLY CRIME ANALYSIS
 
 monthly_crimes = df["crime_month"].value_counts().sort_index()
+
 highest_crime_month = monthly_crimes.idxmax()
 highest_crime_count = monthly_crimes.max()
 
@@ -204,7 +231,7 @@ print(f"MONTH WITH HIGHEST CRIME FREQUENCY: {highest_crime_month}")
 print(f"NUMBER OF CRIMES: {highest_crime_count}")
 print("========================================")
 
-# ==================== FINAL MESSAGE ====================
+# FINAL OUTPUT
 
 print("\nUSE CASE 2 COMPLETED SUCCESSFULLY")
 print("All graphs have been saved successfully.")

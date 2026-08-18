@@ -5,14 +5,11 @@ import seaborn as sns
 import os
 import glob
 
-# =========================================================
 # PATH SETUP
-# =========================================================
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(CURRENT_DIR)
 
-# Find Chicago crime CSV automatically
 csv_files = glob.glob(
     os.path.join(BASE_DIR, "**", "*.csv"),
     recursive=True
@@ -26,10 +23,10 @@ if not csv_files:
 required_columns = {"id", "date", "primary_type", "arrest"}
 CSV_FILE = None
 
-# Find correct Chicago crime dataset
 for file in csv_files:
     try:
         temp_df = pd.read_csv(file, nrows=1)
+
         columns = {
             str(column).strip().lower()
             for column in temp_df.columns
@@ -51,13 +48,11 @@ if CSV_FILE is None:
 
     raise SystemExit
 
-# SQLite database file
 DATABASE_FILE = os.path.join(
     CURRENT_DIR,
     "chicago_crime_usecase4.db"
 )
 
-# Chart folder
 CHART_DIR = os.path.join(
     CURRENT_DIR,
     "static",
@@ -75,11 +70,8 @@ print(DATABASE_FILE)
 print("\nChart folder:")
 print(CHART_DIR)
 
-# =========================================================
 # USE CASE 4 - SQLITE REPORTING AND INTEGRATION
-# =========================================================
 
-# Connect to SQLite
 try:
     connection = sqlite3.connect(DATABASE_FILE)
     cursor = connection.cursor()
@@ -91,9 +83,7 @@ except Exception as error:
     print(error)
     raise SystemExit
 
-# =========================================================
-# LOAD CSV DATASET
-# =========================================================
+# LOAD DATA
 
 try:
     df = pd.read_csv(CSV_FILE)
@@ -105,7 +95,6 @@ except Exception as error:
     connection.close()
     raise SystemExit
 
-# Normalize column names
 df.columns = df.columns.str.strip().str.lower()
 
 print("\nCrime dataset loaded successfully.")
@@ -113,7 +102,6 @@ print("Total records:", len(df))
 print("Dataset columns:")
 print(df.columns.tolist())
 
-# Check required columns
 missing_columns = [
     column
     for column in required_columns
@@ -127,25 +115,19 @@ if missing_columns:
     connection.close()
     raise SystemExit
 
-# =========================================================
 # DATA PREPARATION
-# =========================================================
 
-# Convert date to datetime
 df["date"] = pd.to_datetime(
     df["date"],
     errors="coerce"
 )
 
-# Create date features
 df["crime_year"] = df["date"].dt.year
 df["crime_month"] = df["date"].dt.month
 df["day_of_week"] = df["date"].dt.day_name()
 
-# Handle missing crime categories
 df["primary_type"] = df["primary_type"].fillna("UNKNOWN")
 
-# Convert arrest to 1 or 0
 df["arrest"] = (
     df["arrest"]
     .astype(str)
@@ -157,9 +139,7 @@ df["arrest"] = (
 
 print("\nData preparation completed successfully.")
 
-# =========================================================
-# CREATE MAIN SQLITE TABLE
-# =========================================================
+# CREATE SQLITE TABLE
 
 cursor.execute(
     "DROP TABLE IF EXISTS chicago_crimes"
@@ -180,9 +160,7 @@ connection.commit()
 
 print("\nMain table chicago_crimes created successfully.")
 
-# =========================================================
-# PREPARE DATA FOR INSERTION
-# =========================================================
+# PREPARE AND INSERT DATA
 
 insert_query = """
 INSERT INTO chicago_crimes
@@ -236,10 +214,6 @@ for _, row in df.iterrows():
         )
     )
 
-# =========================================================
-# INSERT DATA INTO SQLITE
-# =========================================================
-
 try:
     cursor.executemany(
         insert_query,
@@ -261,11 +235,8 @@ except Exception as error:
 
     raise SystemExit
 
-# =========================================================
-# TASK 1 - CREATE SUMMARY TABLES
-# =========================================================
+# TASK 1 - SUMMARY TABLES
 
-# Yearly summary table
 cursor.execute(
     "DROP TABLE IF EXISTS crime_yearly_summary"
 )
@@ -280,7 +251,6 @@ FROM chicago_crimes
 GROUP BY crime_year
 """)
 
-# Crime category summary
 cursor.execute(
     "DROP TABLE IF EXISTS crime_category_summary"
 )
@@ -298,11 +268,8 @@ connection.commit()
 
 print("\nSummary tables created successfully.")
 
-# =========================================================
 # TASK 2 - SQLITE QUERIES
-# =========================================================
 
-# Crime count per year
 crime_yearly_query = """
 SELECT
     crime_year,
@@ -321,7 +288,6 @@ print("\n========== CRIME COUNT PER YEAR ==========")
 for row in crime_per_year:
     print(row)
 
-# Top 5 crime types
 top_5_crimes_query = """
 SELECT
     primary_type,
@@ -345,7 +311,6 @@ print("\n========== TOP 5 CRIME TYPES ==========")
 for row in top_5_crimes:
     print(row)
 
-# Arrest count per year
 arrest_yearly_query = """
 SELECT
     crime_year,
@@ -364,11 +329,8 @@ print("\n========== ARREST COUNT PER YEAR ==========")
 for row in arrest_per_year:
     print(row)
 
-# =========================================================
-# TASK 3 - CREATE SQLITE VIEWS
-# =========================================================
+# TASK 3 - SQLITE VIEWS
 
-# Yearly crime view
 cursor.execute(
     "DROP VIEW IF EXISTS vw_crime_yearly"
 )
@@ -384,7 +346,6 @@ WHERE crime_year IS NOT NULL
 GROUP BY crime_year
 """)
 
-# Crime category view
 cursor.execute(
     "DROP VIEW IF EXISTS vw_crime_by_category"
 )
@@ -407,9 +368,7 @@ connection.commit()
 
 print("\nDatabase views created successfully.")
 
-# =========================================================
 # TASK 4 - PANDAS AND SQLITE INTEGRATION
-# =========================================================
 
 yearly_df = pd.read_sql("""
 SELECT *
@@ -429,11 +388,8 @@ print(yearly_df)
 print("\n========== TOP CRIME CATEGORY DATA ==========")
 print(category_df.head(10))
 
-# =========================================================
 # TASK 5 - VISUALIZATION
-# =========================================================
 
-# Graph 1: Crime count per year
 plt.figure(figsize=(10, 5))
 
 plt.plot(
@@ -449,16 +405,12 @@ plt.grid(True)
 plt.tight_layout()
 
 plt.savefig(
-    os.path.join(
-        CHART_DIR,
-        "crime_yearly.png"
-    ),
+    os.path.join(CHART_DIR, "crime_yearly.png"),
     bbox_inches="tight"
 )
 
 plt.close()
 
-# Graph 2: Arrest count per year
 plt.figure(figsize=(10, 5))
 
 plt.bar(
@@ -469,21 +421,16 @@ plt.bar(
 plt.title("Arrest Count Per Year - SQLite Data")
 plt.xlabel("Year")
 plt.ylabel("Arrest Count")
-
 plt.xticks(rotation=45)
 plt.tight_layout()
 
 plt.savefig(
-    os.path.join(
-        CHART_DIR,
-        "arrest_yearly.png"
-    ),
+    os.path.join(CHART_DIR, "arrest_yearly.png"),
     bbox_inches="tight"
 )
 
 plt.close()
 
-# Graph 3: Top crime categories
 top_categories = category_df.head(10)
 
 plt.figure(figsize=(12, 6))
@@ -497,29 +444,21 @@ sns.barplot(
 plt.title("Top 10 Crime Categories - SQLite Data")
 plt.xlabel("Crime Count")
 plt.ylabel("Crime Type")
-
 plt.tight_layout()
 
 plt.savefig(
-    os.path.join(
-        CHART_DIR,
-        "top_categories.png"
-    ),
+    os.path.join(CHART_DIR, "top_categories.png"),
     bbox_inches="tight"
 )
 
 plt.close()
 
-# =========================================================
 # CLOSE CONNECTION
-# =========================================================
 
 cursor.close()
 connection.close()
 
-# =========================================================
 # FINAL OUTPUT
-# =========================================================
 
 print("\n========================================")
 print("USE CASE 4 COMPLETED SUCCESSFULLY")
